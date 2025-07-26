@@ -1,0 +1,13 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../dist/client",
+    "rootDir": ".",
+    "module": "commonjs",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"]
+  },
+  "include": ["./**/*"],
+  "references": [
+    { "path": "../shared" }
+  ]
+}

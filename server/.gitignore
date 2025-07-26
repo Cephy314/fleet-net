@@ -1,0 +1,18 @@
+ # Server-specific build files
+  *.pid
+  *.seed
+  *.pid.lock
+
+  # Database files (for future SQLite)
+  *.db
+  *.sqlite
+  *.sqlite3
+
+  # Logs
+  logs/
+  *.log
+
+  # SSL certificates (for development)
+  *.pem
+  *.key
+  *.crt

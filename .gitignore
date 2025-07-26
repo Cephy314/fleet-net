@@ -1,0 +1,64 @@
+# Dependencies
+node_modules/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Build outputs
+dist/
+build/
+out/
+*.tsbuildinfo
+
+# Testing
+coverage/
+.nyc_output/
+*.lcov
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Electron
+electron-builder.yml
+dist_electron/
+
+# OS files
+Thumbs.db
+Desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Ignore Claude Files
+.claude/
+*.local.md
+CLAUDE.md
+
+# Ignore specific IDE files
+.vscode/
+.idea/
+.project
+.classpath
+.settings/
+.c9/
+.vscode-test/
+.history/
+
+# Ignore weird files.
+nul
+    
