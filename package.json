@@ -14,13 +14,18 @@
     "test:client": "jest --selectProjects=client-main,client-renderer",
     "build": "tsc --build",
     "clean": "tsc --build --clean",
-    "dev": "ts-node"
+    "dev": "ts-node",
+    "lint": "biome lint .",
+    "format": "biome format --write .",
+    "check": "biome check .",
+    "check:fix": "biome check --write ."
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@biomejs/biome": "2.1.2",
     "@jest/globals": "^30.0.5",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.1.0",

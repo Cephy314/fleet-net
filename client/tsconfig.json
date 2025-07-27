@@ -7,7 +7,5 @@
     "lib": ["ES2022", "DOM", "DOM.Iterable"]
   },
   "include": ["./**/*"],
-  "references": [
-    { "path": "../shared" }
-  ]
+  "references": [{ "path": "../shared" }]
 }
