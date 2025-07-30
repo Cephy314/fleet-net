@@ -8,7 +8,7 @@ module.exports = {
       testMatch: [
         '<rootDir>/server/**/*.test.ts',
         '<rootDir>/tests/unit/server/**/*.test.ts',
-        '<rootDir>/tests/integration/server/**/*.test.ts',
+        '<rootDir>/tests/integration/**/*.test.ts',
       ],
       moduleNameMapper: {
         '^@shared/(.*)$': '<rootDir>/shared/$1',
