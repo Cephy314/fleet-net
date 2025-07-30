@@ -1,4 +1,4 @@
-import { Packr, Unpackr } from 'msgpackr';
+import { Packr, Unpackr, unpackMultiple } from 'msgpackr';
 import type { Message } from './messages';
 
 export class ProtocolHandler {
@@ -19,7 +19,10 @@ export class ProtocolHandler {
   }
 
   encode(message: Message): Buffer {
-    return this.packer.encode(message);
+    const msgBuffer = Buffer.from(this.packer.encode(message));
+    const lengthBuffer = Buffer.allocUnsafe(4);
+    lengthBuffer.writeUInt32BE(msgBuffer.length, 0);
+    return Buffer.concat([lengthBuffer, msgBuffer]);
   }
 
   decode(data: Buffer): Message {
@@ -30,21 +33,27 @@ export class ProtocolHandler {
     this.buffer = Buffer.concat([this.buffer, data]);
     const messages: Message[] = [];
 
-    while (this.buffer.length > 0) {
-      try {
-        // Try to decode a message.
-        const message = this.unpacker.decode(this.buffer);
-        messages.push(message);
+    while (this.buffer.length >= 4) {
+      // Read the message length
+      const messageLength = this.buffer.readUint32BE(0);
 
-        // Move past the decoded message.
-        const bytesConsumed = this.unpacker.position || 0;
-        this.buffer = this.buffer.slice(bytesConsumed);
-      } catch (error) {
-        // Not enough data for a complete message!
-        break;
+      // Check if we have the complete message
+      if (this.buffer.length < 4 + messageLength) {
+        break; // wait for more data
       }
-    }
 
+      const messageBuffer = this.buffer.subarray(4, 4 + messageLength);
+      try {
+        const message = this.unpacker.decode(messageBuffer);
+        messages.push(message);
+      } catch (error) {
+        console.error('Failed to decode message:', error);
+        // skip this message and continue
+      }
+
+      // Remove the processed message from the buffer
+      this.buffer = this.buffer.subarray(4 + messageLength);
+    }
     return messages;
   }
 

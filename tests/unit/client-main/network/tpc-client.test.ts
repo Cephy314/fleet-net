@@ -1,6 +1,8 @@
 import { EventEmitter } from 'node:events';
 import * as net from 'node:net';
 import { TcpClient } from '../../../../client/main/network/tcp-client';
+import { MessageType } from '../../../../shared/protocol/messages';
+import { ProtocolHandler } from '../../../../shared/protocol/protocol-handler';
 
 jest.mock('net');
 
@@ -15,10 +17,12 @@ class MockSocket extends EventEmitter {
 describe('TcpClient', () => {
   let client: TcpClient;
   let mockSocket: MockSocket;
+  let protocolHandler: ProtocolHandler;
 
   beforeEach(() => {
     // Create a fresh mock socket for each test
     mockSocket = new MockSocket();
+    protocolHandler = new ProtocolHandler();
 
     // Mock createConnection to return our mock socket
     (net.createConnection as jest.Mock).mockReturnValue(mockSocket);
@@ -54,7 +58,7 @@ describe('TcpClient', () => {
 
   it('should perform handshake after connection', (done) => {
     const mockHandshakeResponse = {
-      type: 'handshake_ack',
+      type: MessageType.HANDSHAKE_ACK,
       sessionId: 'test-session-123',
       serverVersion: '1.0.0',
     };
@@ -70,11 +74,21 @@ describe('TcpClient', () => {
     mockSocket.emit('connect');
 
     // Verify handshake message was sent
-    expect(mockSocket.write).toHaveBeenCalledWith(
-      `${JSON.stringify({ type: 'handshake', clientVersion: '1.0.0' })} \n`,
-    );
+    expect(mockSocket.write).toHaveBeenCalled();
+    const sentData = mockSocket.write.mock.calls[0][0];
+    expect(sentData).toBeInstanceOf(Buffer);
+
+    // Decode what was sent to verify it's correct.
+    const testHandler = new ProtocolHandler();
+    const sentMessages = testHandler.addData(sentData);
+    expect(sentMessages).toHaveLength(1);
+    expect(sentMessages[0]).toEqual({
+      type: MessageType.HANDSHAKE,
+      clientVersion: '1.0.0',
+    });
 
     // Simulate server response
-    mockSocket.emit('data', `${JSON.stringify(mockHandshakeResponse)}\n`);
+    const responseBuffer = protocolHandler.encode(mockHandshakeResponse);
+    mockSocket.emit('data', responseBuffer);
   });
 });
