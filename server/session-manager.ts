@@ -15,7 +15,7 @@ export class SessionManager {
    * Use SessionManager.getInstance() to access the singleton instance.
    */
   private constructor() {
-    // add stuff here!
+    // Nothing happening here, just to enforce singleton.
   }
 
   /**
@@ -151,6 +151,28 @@ export class SessionManager {
   ): Session | undefined {
     const udpKey = this.getUdpKey(address, port);
     return this.sessionsByUdpKey[udpKey];
+  }
+
+  public getAllSessions(): Session[] {
+    return Object.values(this.sessionsByUserId);
+  }
+
+  public removeSessions(sessions: Session[]): void {
+    for (const session of sessions) {
+      this.removeSession(session.userId);
+    }
+  }
+
+  public setNextUserId(userId: number): void {
+    if (userId < 1 || userId > 65535) {
+      console.warn('User ID must be between 1 and 65535');
+      return; // Invalid user ID
+    }
+    if (this.sessionsByUserId[userId]) {
+      console.warn(`User ID ${userId} is currently in use!`);
+      return; // User ID already in use
+    }
+    this.nextUserId = userId;
   }
 
   /**
