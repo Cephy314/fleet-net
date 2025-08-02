@@ -28,29 +28,7 @@ Fleet Net is a **real-time voice communication system** designed specifically fo
 - **📡 Low Latency**: Pure SFU architecture with direct packet forwarding
 
 ## 🏗️ Architecture
-
-### Technology Stack
-- **Client**: Electron + TypeScript + Web Audio API
-- **Server**: Node.js + TypeScript + Worker Threads
-- **Control Plane**: Socket.IO (TCP)
-- **Audio Plane**: Custom UDP protocol with HMAC authentication
-- **Database**: SQLite for permissions and configuration
-- **Audio Codec**: Opus (configurable quality tiers)
-
-### Network Protocol
-```
-Control Channel (Socket.IO/TCP):
-- User authentication
-- Channel management
-- State synchronization
-- Permission updates
-
-Audio Channel (UDP):
-- 16-bit Channel ID
-- 16-bit User ID
-- HMAC authentication
-- Opus audio payload
-```
+Fleet Net is built on a **hybrid TCP/UDP architecture** with a custom protocol that supports real-time voice communication. The system uses a **Selective Forwarding Unit (SFU)** model, where the server forwards audio packets to clients without processing them, allowing for efficient client-side mixing.
 
 ## 🚧 Current Status
 

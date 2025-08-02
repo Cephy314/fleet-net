@@ -3,6 +3,9 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
+  <component name="CargoProjects">
+    <cargoProject FILE="$PROJECT_DIR$/crates/fleet-net-server/Cargo.toml" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="d48f0b7e-eee4-4788-917f-108f769a3ee9" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -34,13 +37,14 @@
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.rust.reset.selective.auto.import": "true",
     "git-widget-placeholder": "rust-migration",
-    "last_opened_file_path": "/home/cephy/source/fleet-net",
+    "last_opened_file_path": "/home/cephy/source/fleet-net/crates/fleet-net-server/Cargo.toml",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs.jest.jest_package": "/home/cephy/source/fleet-net/node_modules/jest",
     "nodejs_package_manager_path": "npm",
+    "org.rust.cargo.project.model.PROJECT_DISCOVERY": "true",
     "org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon": "",
     "settings.editor.selected.configurable": "settings.sync",
     "ts.external.directory.path": "/home/cephy/source/fleet-net/node_modules/typescript/lib",
@@ -83,6 +87,9 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="RustProjectSettings">
+    <option name="toolchainHomeDirectory" value="$USER_HOME$/.cargo/bin" />
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -109,7 +116,7 @@
       <workItem from="1754018691727" duration="358000" />
       <workItem from="1754019058029" duration="1498000" />
       <workItem from="1754020568757" duration="7045000" />
-      <workItem from="1754093561722" duration="631000" />
+      <workItem from="1754093561722" duration="2083000" />
     </task>
     <servers />
   </component>
