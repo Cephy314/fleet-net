@@ -1,0 +1,19 @@
+[workspace]
+members = [
+  "crates/fleet-net-client",
+  "crates/fleet-net-server",
+  "crates/fleet-net-common",
+  "crates/fleet-net-protocol",
+  "crates/fleet-net-audio",
+]
+resolver = "2"
+
+[workspace.dependencies]
+# Shared dependencies with unified versions
+tokio = { version = "1.47", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0.142"
+anyhow = "1.0"
+tracing = "0.1"
+tracing-subscriber = "0.3.19"
+# ... other common deps

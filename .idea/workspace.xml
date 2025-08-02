@@ -13,6 +13,15 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FormatOnSaveOptions">
+    <option name="mySelectedFileTypes">
+      <set>
+        <option value="Rust" />
+        <option value="TOML" />
+        <option value="YAML" />
+      </set>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -32,6 +41,9 @@
   "keyToString": {
     "Jest.SocketServer.Event Handlers.channel:join.should notify other users when someone joins..executor": "Run",
     "Jest.SocketServer.Event Handlers.executor": "Run",
+    "Makefile Target.fmt.executor": "Run",
+    "Makefile Target.lint.executor": "Run",
+    "Makefile Target.test.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -46,12 +58,32 @@
     "nodejs_package_manager_path": "npm",
     "org.rust.cargo.project.model.PROJECT_DISCOVERY": "true",
     "org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon": "",
-    "settings.editor.selected.configurable": "settings.sync",
+    "settings.editor.selected.configurable": "language.rust.cargo.check",
     "ts.external.directory.path": "/home/cephy/source/fleet-net/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Jest.SocketServer.Event Handlers.channel:join.should notify other users when someone joins.">
+  <component name="RsExternalLinterProjectSettings">
+    <option name="tool" value="Clippy" />
+  </component>
+  <component name="RunManager" selected="Makefile Target.test">
+    <configuration default="true" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
+      <option name="command" value="run" />
+      <option name="workingDirectory" value="file://$PROJECT_DIR$/crates/fleet-net-server" />
+      <envs />
+      <option name="emulateTerminal" value="true" />
+      <option name="channel" value="DEFAULT" />
+      <option name="requiredFeatures" value="true" />
+      <option name="allFeatures" value="false" />
+      <option name="withSudo" value="false" />
+      <option name="buildTarget" value="REMOTE" />
+      <option name="backtrace" value="SHORT" />
+      <option name="isRedirectInput" value="false" />
+      <option name="redirectInputPath" value="" />
+      <method v="2">
+        <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="SocketServer.Event Handlers" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <jest-package value="$PROJECT_DIR$/node_modules/jest" />
@@ -80,8 +112,29 @@
       </test-names>
       <method v="2" />
     </configuration>
+    <configuration name="fmt" type="MAKEFILE_TARGET_RUN_CONFIGURATION" factoryName="Makefile" temporary="true">
+      <makefile filename="$PROJECT_DIR$/Makefile" target="fmt" workingDirectory="" arguments="">
+        <envs />
+      </makefile>
+      <method v="2" />
+    </configuration>
+    <configuration name="lint" type="MAKEFILE_TARGET_RUN_CONFIGURATION" factoryName="Makefile" temporary="true">
+      <makefile filename="$PROJECT_DIR$/Makefile" target="lint" workingDirectory="" arguments="">
+        <envs />
+      </makefile>
+      <method v="2" />
+    </configuration>
+    <configuration name="test" type="MAKEFILE_TARGET_RUN_CONFIGURATION" factoryName="Makefile" temporary="true">
+      <makefile filename="$PROJECT_DIR$/Makefile" target="test" workingDirectory="" arguments="">
+        <envs />
+      </makefile>
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Makefile Target.test" />
+        <item itemvalue="Makefile Target.lint" />
+        <item itemvalue="Makefile Target.fmt" />
         <item itemvalue="Jest.SocketServer.Event Handlers.channel:join.should notify other users when someone joins." />
         <item itemvalue="Jest.SocketServer.Event Handlers" />
       </list>
@@ -116,7 +169,7 @@
       <workItem from="1754018691727" duration="358000" />
       <workItem from="1754019058029" duration="1498000" />
       <workItem from="1754020568757" duration="7045000" />
-      <workItem from="1754093561722" duration="2083000" />
+      <workItem from="1754093561722" duration="6977000" />
     </task>
     <servers />
   </component>
