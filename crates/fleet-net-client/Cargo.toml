@@ -6,6 +6,10 @@ authors = ["Victoria Beauray Sagady <cephypi@pm.me>"]
 description = "Fleet Net desktop client"
 license = "AGPL-3"
 
+[[bin]]
+name = "fleet-net-client"
+path = "src-tauri/src/main.rs"
+
 [build-dependencies]
 tauri-build = { version = "2.3.1", features = [] }
 

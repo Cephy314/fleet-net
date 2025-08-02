@@ -4,8 +4,9 @@
   "identifier": "com.fleet-net.app",
   "build": {
     "beforeDevCommand": "",
-    "devUrl": "../ui",
-    "beforeBuildCommand": ""
+    "devUrl": "http://localhost:3000",
+    "beforeBuildCommand": "",
+    "distDir": "../ui"
   },
   "app": {
     "windows": [

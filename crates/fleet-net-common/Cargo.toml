@@ -11,6 +11,7 @@ license = "AGPL-3"
 anyhow = { workspace = true }
 tracing = { workspace = true }
 serde = { workspace = true }
+tracing-subscriber = { workspace = true }
 
 # Additional common dependencies
 thiserror = "2.0.12"

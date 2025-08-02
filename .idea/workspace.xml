@@ -63,6 +63,12 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/crates/fleet-net-client/src-tauri" />
+      <recent name="$PROJECT_DIR$/crates/fleet-net-client" />
+    </key>
+  </component>
   <component name="RsExternalLinterProjectSettings">
     <option name="tool" value="Clippy" />
   </component>
@@ -169,7 +175,7 @@
       <workItem from="1754018691727" duration="358000" />
       <workItem from="1754019058029" duration="1498000" />
       <workItem from="1754020568757" duration="7045000" />
-      <workItem from="1754093561722" duration="8639000" />
+      <workItem from="1754093561722" duration="10031000" />
     </task>
     <servers />
   </component>
