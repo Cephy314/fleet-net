@@ -58,7 +58,7 @@
     "nodejs_package_manager_path": "npm",
     "org.rust.cargo.project.model.PROJECT_DISCOVERY": "true",
     "org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon": "",
-    "settings.editor.selected.configurable": "language.rust.cargo.check",
+    "settings.editor.selected.configurable": "settings.sync",
     "ts.external.directory.path": "/home/cephy/source/fleet-net/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
@@ -169,7 +169,7 @@
       <workItem from="1754018691727" duration="358000" />
       <workItem from="1754019058029" duration="1498000" />
       <workItem from="1754020568757" duration="7045000" />
-      <workItem from="1754093561722" duration="6977000" />
+      <workItem from="1754093561722" duration="8639000" />
     </task>
     <servers />
   </component>
