@@ -54,63 +54,7 @@ Audio Channel (UDP):
 
 ## 🚧 Current Status
 
-This project is actively under development, migrating from a custom TCP protocol to a hybrid Socket.IO/UDP architecture.
-
-### Completed ✅
-- Core architecture design
-- Protocol specifications
-- Session management interface
-- Technology stack selection
-
-### In Progress 🔄
-- Socket.IO server implementation
-- UDP audio server
-- Client migration to Socket.IO
-- Session manager implementation
-
-### Upcoming 📋
-- Discord OAuth2 integration
-- Audio DSP pipeline
-- Radio simulation effects
-- Permission system
-- Admin tools
-
-## 🚀 Getting Started
-
-> ⚠️ **Note**: Fleet Net is in early development. Setup instructions will be provided once the MVP is functional.
-
-### Prerequisites
-- Node.js 18+
-- npm or yarn
-- Discord application (for OAuth2)
-
-### Installation
-```bash
-# Clone the repository
-git clone https://github.com/yourusername/fleet-net.git
-cd fleet-net
-
-# Install dependencies
-npm install
-
-# Build the project
-npm run build
-```
-
-## 📖 Documentation
-
-- [**Fleet Net Development Specification**](docs/FLEET-NET.md) - Complete technical specification
-- [**Socket.IO Migration Progress**](SOCKET_IO_MIGRATION.md) - Current migration status
-
-## 🎯 Minimum Viable Product (MVP)
-
-The MVP will include:
-1. Basic multi-radio PTT functionality
-2. Channel subscriptions and forwarding
-3. Discord authentication
-4. Simple DSP effects
-5. Jitter buffer with adaptive delay
-
+This project is actively under development
 ## 🤝 Contributing
 
 Fleet Net is currently in early development. Contribution guidelines will be established once the core functionality is implemented.
