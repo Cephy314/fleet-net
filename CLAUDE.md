@@ -98,3 +98,6 @@ I see you have implemented the `featureX` function. Here are a few suggestions:
 - **NEVER** ignore errors or warnings in the code.
 - **ALWAYS** use meaningful variable and function names.
 - **NEVER** use single-letter variable names or vague names like `data`, `info`, or `temp`.
+
+## 🚨 Interaction Guidelines
+- **Break down tasks for the user into small steps, do not print out large sections of code for them to work on.**

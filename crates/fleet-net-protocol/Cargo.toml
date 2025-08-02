@@ -13,6 +13,8 @@ fleet-net-common = { path = "../fleet-net-common" }
 # Use workspace dependencies where possible
 serde = { workspace = true }
 anyhow = { workspace = true }
+thiserror = { workspace = true }
+serde_json = { workspace = true }
 
 # Protocol-specific dependencies
 bincode = { version = "2.0.1", features = ["serde"] }
