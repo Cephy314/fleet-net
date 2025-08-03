@@ -4,14 +4,50 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="CargoProjects">
-    <cargoProject FILE="$PROJECT_DIR$/crates/fleet-net-server/Cargo.toml" />
+    <cargoProject FILE="$PROJECT_DIR$/Cargo.toml">
+      <package file="$PROJECT_DIR$/crates/fleet-net-audio">
+        <enabledFeature name="default" />
+      </package>
+      <package file="$PROJECT_DIR$/crates/fleet-net-client">
+        <enabledFeature name="default" />
+      </package>
+      <package file="$PROJECT_DIR$/crates/fleet-net-common">
+        <enabledFeature name="default" />
+      </package>
+      <package file="$PROJECT_DIR$/crates/fleet-net-protocol">
+        <enabledFeature name="default" />
+      </package>
+      <package file="$PROJECT_DIR$/crates/fleet-net-server">
+        <enabledFeature name="default" />
+      </package>
+    </cargoProject>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d48f0b7e-eee4-4788-917f-108f769a3ee9" name="Changes" comment="" />
+    <list default="true" id="d48f0b7e-eee4-4788-917f-108f769a3ee9" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/TODO.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crates/fleet-net-common/src/audio.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crates/fleet-net-common/src/channel.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crates/fleet-net-common/src/permission.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crates/fleet-net-common/src/role.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crates/fleet-net-common/src/session.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crates/fleet-net-common/src/user.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.clippy.toml" beforeDir="false" afterPath="$PROJECT_DIR$/.clippy.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/fleet-net-common/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/crates/fleet-net-common/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/fleet-net-common/src/lib.rs" beforeDir="false" afterPath="$PROJECT_DIR$/crates/fleet-net-common/src/lib.rs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Rust File" />
+      </list>
+    </option>
   </component>
   <component name="FormatOnSaveOptions">
     <option name="mySelectedFileTypes">
@@ -27,6 +63,9 @@
   </component>
   <component name="MacroExpansionManager">
     <option name="directoryName" value="TEpEdfEz" />
+  </component>
+  <component name="OptimizeOnSaveOptions">
+    <option name="myRunOnSave" value="true" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
@@ -58,7 +97,7 @@
     "nodejs_package_manager_path": "npm",
     "org.rust.cargo.project.model.PROJECT_DISCOVERY": "true",
     "org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon": "",
-    "settings.editor.selected.configurable": "settings.sync",
+    "settings.editor.selected.configurable": "MTCompactSettingsConfigurable",
     "ts.external.directory.path": "/home/cephy/source/fleet-net/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
@@ -73,23 +112,6 @@
     <option name="tool" value="Clippy" />
   </component>
   <component name="RunManager" selected="Makefile Target.test">
-    <configuration default="true" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
-      <option name="command" value="run" />
-      <option name="workingDirectory" value="file://$PROJECT_DIR$/crates/fleet-net-server" />
-      <envs />
-      <option name="emulateTerminal" value="true" />
-      <option name="channel" value="DEFAULT" />
-      <option name="requiredFeatures" value="true" />
-      <option name="allFeatures" value="false" />
-      <option name="withSudo" value="false" />
-      <option name="buildTarget" value="REMOTE" />
-      <option name="backtrace" value="SHORT" />
-      <option name="isRedirectInput" value="false" />
-      <option name="redirectInputPath" value="" />
-      <method v="2">
-        <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="SocketServer.Event Handlers" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <jest-package value="$PROJECT_DIR$/node_modules/jest" />
@@ -175,7 +197,9 @@
       <workItem from="1754018691727" duration="358000" />
       <workItem from="1754019058029" duration="1498000" />
       <workItem from="1754020568757" duration="7045000" />
-      <workItem from="1754093561722" duration="19334000" />
+      <workItem from="1754093561722" duration="20026000" />
+      <workItem from="1754183253962" duration="6243000" />
+      <workItem from="1754190123128" duration="172000" />
     </task>
     <servers />
   </component>

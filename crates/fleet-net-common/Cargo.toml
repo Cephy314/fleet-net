@@ -18,3 +18,10 @@ thiserror = { workspace = true }
 
 uuid = { version = "1.17.0", features = ["v4", "serde"] }
 chrono = { version = "0.4", features = ["serde"] }
+
+[lints.rust]
+unused = "allow"
+unsafe_code = "forbid"
+
+[lints.clippy]
+enum_glob_use = "deny"
