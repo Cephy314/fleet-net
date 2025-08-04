@@ -28,3 +28,19 @@ pub enum SessionState {
     Away, // User set themselves away (deafened/muted).
     Disconnecting,
 }
+
+impl Session {
+    // update the users activity time.
+    pub fn update_activity(&mut self) {
+        let now = Instant::now();
+        self.last_active = now;
+    }
+
+    // Has the user been idle longer than the given duration in seconds
+    pub fn is_idle(&self, duration: u64) -> bool {
+        // Get idle duration by subtracting last_active from now
+        let dur = Instant::now().duration_since(self.last_active);
+
+        dur.as_secs() >= duration
+    }
+}
