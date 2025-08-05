@@ -101,3 +101,53 @@ I see you have implemented the `featureX` function. Here are a few suggestions:
 
 ## 🚨 Interaction Guidelines
 - **Break down tasks for the user into small steps, do not print out large sections of code for them to work on.**
+
+## 🚨 MANDATORY: Testing and Validation
+- **ALWAYS** write tests for new features or changes if they modify the behavior of the code.  Tests should be written to test behavior, not implementation or internal details.
+- **NEVER** skip writing tests or assume the code works without validation.
+
+** FEATURE EXAMPLE** 
+```rust
+pub struct FeatureX {
+    pub first_number: i32,
+    pub second_number: i32,
+}
+
+impl FeatureX {
+    pub fn add(&self) -> i32 {
+        self.first_number + self.second_number
+    }
+}
+```
+❌ **BAD** TEST EXAMPLE: This tests if setting a field works, but does not test any behavior.
+```rust
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test_feature_x() {
+        let mut feature_x = FeatureX::new();
+        feature_x.first_number = 5;
+        feature_x.second_number = 10;
+
+        assert_eq!(feature_x.first_number, 5);
+        assert_eq!(feature_x.second_number, 10);
+    }
+}
+```
+
+✅ **GOOD** TEST EXAMPLE: This tests the behavior of the `add` method, which is the core functionality of the `FeatureX` struct.
+```rust
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test_feature_x_add() {
+        let feature_x = FeatureX {
+            first_number: 5,
+            second_number: 10,
+        };
+        assert_eq!(feature_x.add(), 15);
+    }
+}
+```
