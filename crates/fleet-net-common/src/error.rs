@@ -57,6 +57,9 @@ pub enum FleetNetError {
     #[error("Packet error: {0}")]
     PacketError(Cow<'static, str>),
 
+    #[error("JSON error: {0}")]
+    JsonError(Cow<'static, str>),
+
     /// Authentication and authorization failures.
     ///
     /// This variant covers:
@@ -76,4 +79,16 @@ pub enum FleetNetError {
     /// - Channel subscription denials
     #[error("Permission error: {0}")]
     PermissionError(Cow<'static, str>),
+}
+
+impl From<serde_json::Error> for FleetNetError {
+    fn from(err: serde_json::Error) -> Self {
+        FleetNetError::JsonError(Cow::Owned(err.to_string()))
+    }
+}
+
+impl From<std::io::Error> for FleetNetError {
+    fn from(err: std::io::Error) -> Self {
+        FleetNetError::NetworkError(Cow::Owned(err.to_string()))
+    }
 }

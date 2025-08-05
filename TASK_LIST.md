@@ -2,7 +2,7 @@
 
 ## Current Tasks
 
-### Code Quality Improvements (From Code Review)
+### Code Quality Improvements (From Code Review) - COMPLETED
 - [x] Fix memory layout in PacketHeader (remove `repr(C)` or use `packed`)
 - [x] Optimize string allocations (use `Cow<str>` where appropriate)
     - [x] Error messages in FleetNetError
@@ -10,9 +10,7 @@
     - [x] Session immutable strings (kept as String for simplicity)
     - [x] Role system strings (kept as String - all user-defined)
     - [x] Channel names (kept as String - all user-defined)
-- [ ] Add Permission newtype wrapper for type safety
 - [x] Add missing derive implementations (PartialEq, Eq, Hash)
-- [ ] Pre-allocate vectors in packet parsing
 
 ### Test Coverage (Partially Complete)
 - [x] Basic test structure added for common crate modules
@@ -26,6 +24,11 @@
 - [x] Basic server setup with logging
 - [ ] TCP control channel implementation
     - [ ] Connection handling
+        - [x] Message framing with length prefix
+        - [x] JSON serialization/deserialization
+        - [ ] Add protocol versioning support (NEXT - needed for HMAC)
+        - [ ] Add HMAC validation for message integrity (HIGH PRIORITY - implement now)
+        - [ ] Complete security tests (oversized messages, invalid data)
     - [ ] Message routing
     - [ ] Authentication flow
 - [ ] UDP audio packet forwarding
@@ -81,16 +84,19 @@
 - [x] Radio system design and structures (moved to client crate)
 - [x] Common module with session helper methods
 - [x] Protocol module with TCP/UDP implementations
+- [x] Connection struct moved to protocol crate (shared between client/server)
 
 ## Future Enhancements
 - [ ] Database integration for persistent storage
-- [ ] Redis integration for session caching
-- [ ] Kubernetes deployment configuration
-- [ ] Monitoring and metrics (Prometheus)
 - [ ] Rate limiting and DDoS protection
-- [ ] WebRTC support for browser clients
 - [ ] Admin dashboard
 - [ ] Audit logging system
+
+## Future Optimizations (Post-MVP)
+- [ ] Add Permission newtype wrapper for type safety
+- [ ] Pre-allocate vectors in packet parsing
+- [ ] Profile and optimize hot paths
+- [ ] Consider arena allocation for short-lived objects
 
 ## Documentation
 - [ ] API documentation
