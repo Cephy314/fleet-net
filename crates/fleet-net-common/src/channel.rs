@@ -73,7 +73,7 @@ pub struct Channel {
 }
 
 /// Types of channels supported by Fleet Net.
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
 pub enum ChannelType {
     /// Standard voice channel for real-time communication.
     /// Users can only be in one voice channel at a time.
@@ -112,7 +112,7 @@ pub enum ChannelType {
 ///     deny: permissions::MOVE_USERS,
 /// };
 /// ```
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
 pub struct ChannelPermissions {
     /// Bitmask of explicitly allowed permissions.
     /// These permissions are granted regardless of role permissions.

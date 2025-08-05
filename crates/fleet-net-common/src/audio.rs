@@ -30,7 +30,7 @@ use serde::{Deserialize, Serialize};
 /// assert!(!audio_state.can_speak());
 /// assert!(!audio_state.can_hear());
 /// ```
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct UserAudioState {
     /// The unique identifier for the user this audio state belongs to.
     pub user_id: UserId,

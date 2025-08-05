@@ -3,6 +3,7 @@
 //! This module defines the common error types used throughout the Fleet Net system.
 //! All errors implement the standard `Error` trait and provide human-readable messages.
 
+use std::borrow::Cow;
 use thiserror::Error;
 
 /// Central error type for all Fleet Net operations.
@@ -13,11 +14,15 @@ use thiserror::Error;
 /// # Examples
 ///
 /// ```
+/// use std::borrow::Cow;
 /// use fleet_net_common::error::FleetNetError;
 ///
 /// fn process_audio() -> Result<(), FleetNetError> {
-///     // Simulate an audio processing error
-///     Err(FleetNetError::AudioError("Failed to initialize audio device".to_string()))
+///     // For static error messages (no allocation):
+///   return Err(FleetNetError::AudioError(Cow::Borrowed("Failed to initialize audio device")));
+///
+///   // For dynamic error messages (when you need format!):
+///   Err(FleetNetError::AudioError(Cow::Owned("Device not found!".to_string())))
 /// }
 /// ```
 #[derive(Error, Debug)]
@@ -30,7 +35,7 @@ pub enum FleetNetError {
     /// - Network unreachability
     /// - Protocol violations
     #[error("Network error: {0}")]
-    NetworkError(String),
+    NetworkError(Cow<'static, str>),
 
     /// Audio processing and transmission errors.
     ///
@@ -40,7 +45,7 @@ pub enum FleetNetError {
     /// - Buffer underruns/overruns
     /// - Invalid audio format parameters
     #[error("Audio error: {0}")]
-    AudioError(String),
+    AudioError(Cow<'static, str>),
 
     /// Packet processing and validation errors.
     ///
@@ -50,7 +55,7 @@ pub enum FleetNetError {
     /// - HMAC verification failures
     /// - Sequence number violations
     #[error("Packet error: {0}")]
-    PacketError(String),
+    PacketError(Cow<'static, str>),
 
     /// Authentication and authorization failures.
     ///
@@ -60,7 +65,7 @@ pub enum FleetNetError {
     /// - Discord OAuth failures
     /// - Session validation errors
     #[error("Authentication error: {0}")]
-    AuthError(String),
+    AuthError(Cow<'static, str>),
 
     /// Permission and access control violations.
     ///
@@ -70,5 +75,5 @@ pub enum FleetNetError {
     /// - Administrative action restrictions
     /// - Channel subscription denials
     #[error("Permission error: {0}")]
-    PermissionError(String),
+    PermissionError(Cow<'static, str>),
 }

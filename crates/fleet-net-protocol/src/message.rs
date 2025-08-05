@@ -1,5 +1,6 @@
 use fleet_net_common::types::{ChannelId, UserId};
 use serde::{Deserialize, Serialize};
+use std::borrow::Cow;
 
 // TCP Control Messages for state management
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -8,12 +9,12 @@ pub enum ControlMessage {
     // Authentication Messages
     Authenticate {
         token: String,
-        client_version: String,
+        client_version: Cow<'static, str>,
     },
     AuthResponse {
         success: bool,
         user_id: Option<UserId>,
-        error: Option<String>,
+        error: Option<Cow<'static, str>>,
     },
     JoinChannel {
         channel_id: ChannelId,
@@ -44,12 +45,12 @@ pub enum ControlMessage {
     // Server State
     ServerInfo {
         name: String,
-        version: String,
+        version: Cow<'static, str>,
         user_count: u32,
         channel_count: u32,
     },
     Error {
-        code: String,
+        code: Cow<'static, str>,
         message: String,
     },
 
@@ -65,7 +66,7 @@ mod tests {
     fn test_message_serialization() {
         let msg = ControlMessage::Authenticate {
             token: "discord_token_123".to_string(),
-            client_version: "1.0.0".to_string(),
+            client_version: Cow::Borrowed("1.0.0"),
         };
 
         // Serialize to JSON
@@ -82,7 +83,7 @@ mod tests {
                 client_version,
             } => {
                 assert_eq!(token, "discord_token_123");
-                assert_eq!(client_version, "1.0.0");
+                assert_eq!(client_version, Cow::Borrowed("1.0.0"));
             }
             _ => panic!("Wrong message type!"),
         }

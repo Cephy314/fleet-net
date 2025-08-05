@@ -1,5 +1,6 @@
 use bytes::{Buf, BufMut, BytesMut};
 use fleet_net_common::types::{ChannelId, UserId};
+use std::borrow::Cow;
 use thiserror::Error;
 
 #[derive(Error, Debug, Clone, Copy, PartialEq, Eq)]
@@ -14,12 +15,11 @@ pub enum PacketError {
 
 impl From<PacketError> for fleet_net_common::error::FleetNetError {
     fn from(err: PacketError) -> Self {
-        fleet_net_common::error::FleetNetError::PacketError(err.to_string())
+        fleet_net_common::error::FleetNetError::PacketError(Cow::Owned(err.to_string()))
     }
 }
 
-#[derive(Debug, Clone, Copy)]
-#[repr(C)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct PacketHeader {
     /// Channel ID where audio is being sent.
     pub channel_id: ChannelId,
@@ -78,7 +78,7 @@ impl PacketHeader {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct AudioPacket {
     pub header: PacketHeader,
     pub opus_payload: Vec<u8>,

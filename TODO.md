@@ -3,10 +3,15 @@
 ## Current Tasks
 
 ### Code Quality Improvements (From Code Review)
-- [ ] Fix memory layout in PacketHeader (remove `repr(C)` or use `packed`)
-- [ ] Optimize string allocations (use `Cow<str>` where appropriate)
+- [x] Fix memory layout in PacketHeader (remove `repr(C)` or use `packed`)
+- [x] Optimize string allocations (use `Cow<str>` where appropriate)
+    - [x] Error messages in FleetNetError
+    - [x] Protocol messages (ControlMessage fields)
+    - [x] Session immutable strings (kept as String for simplicity)
+    - [x] Role system strings (kept as String - all user-defined)
+    - [x] Channel names (kept as String - all user-defined)
 - [ ] Add Permission newtype wrapper for type safety
-- [ ] Add missing derive implementations (PartialEq, Eq, Hash)
+- [x] Add missing derive implementations (PartialEq, Eq, Hash)
 - [ ] Pre-allocate vectors in packet parsing
 
 ### Test Coverage (Partially Complete)
