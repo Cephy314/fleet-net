@@ -18,6 +18,7 @@ thiserror = { workspace = true }
 
 uuid = { version = "1.17.0", features = ["v4", "serde"] }
 chrono = { version = "0.4", features = ["serde"] }
+serde_json = "1.0.142"
 
 [lints.rust]
 unused = "allow"

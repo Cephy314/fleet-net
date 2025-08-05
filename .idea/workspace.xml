@@ -25,8 +25,18 @@
   <component name="ChangeListManager">
     <list default="true" id="d48f0b7e-eee4-4788-917f-108f769a3ee9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TODO.md" beforeDir="false" afterPath="$PROJECT_DIR$/TODO.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cargo.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/fleet-net-common/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/crates/fleet-net-common/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/fleet-net-common/src/audio.rs" beforeDir="false" afterPath="$PROJECT_DIR$/crates/fleet-net-common/src/audio.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/fleet-net-common/src/channel.rs" beforeDir="false" afterPath="$PROJECT_DIR$/crates/fleet-net-common/src/channel.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/fleet-net-common/src/error.rs" beforeDir="false" afterPath="$PROJECT_DIR$/crates/fleet-net-common/src/error.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/fleet-net-common/src/lib.rs" beforeDir="false" afterPath="$PROJECT_DIR$/crates/fleet-net-common/src/lib.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/fleet-net-common/src/logging.rs" beforeDir="false" afterPath="$PROJECT_DIR$/crates/fleet-net-common/src/logging.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/fleet-net-common/src/permission.rs" beforeDir="false" afterPath="$PROJECT_DIR$/crates/fleet-net-common/src/permission.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/fleet-net-common/src/role.rs" beforeDir="false" afterPath="$PROJECT_DIR$/crates/fleet-net-common/src/role.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/crates/fleet-net-common/src/session.rs" beforeDir="false" afterPath="$PROJECT_DIR$/crates/fleet-net-common/src/session.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/fleet-net-common/src/types.rs" beforeDir="false" afterPath="$PROJECT_DIR$/crates/fleet-net-common/src/types.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/fleet-net-common/src/user.rs" beforeDir="false" afterPath="$PROJECT_DIR$/crates/fleet-net-common/src/user.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,7 +99,7 @@
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;org.rust.cargo.project.model.PROJECT_DISCOVERY&quot;: &quot;true&quot;,
     &quot;org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon&quot;: &quot;&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.fonts.default&quot;,
     &quot;ts.external.directory.path&quot;: &quot;/home/cephy/source/fleet-net/node_modules/typescript/lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
@@ -192,11 +202,24 @@
       <workItem from="1754258130868" duration="78000" />
       <workItem from="1754258221713" duration="4455000" />
       <workItem from="1754263875577" duration="3104000" />
+      <workItem from="1754269455734" duration="121000" />
+      <workItem from="1754269591158" duration="17028000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/crates/fleet-net-common/src/audio.rs</url>
+          <line>89</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
