@@ -25,7 +25,7 @@ use thiserror::Error;
 ///   Err(FleetNetError::AudioError(Cow::Owned("Device not found!".to_string())))
 /// }
 /// ```
-#[derive(Error, Debug)]
+#[derive(Error, Debug, Eq, PartialEq, Clone)]
 pub enum FleetNetError {
     /// Network-related errors including connection failures and timeouts.
     ///

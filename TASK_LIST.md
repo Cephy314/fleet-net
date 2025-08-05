@@ -26,7 +26,7 @@
     - [ ] Connection handling
         - [x] Message framing with length prefix
         - [x] JSON serialization/deserialization
-        - [ ] Add protocol versioning support (NEXT - needed for HMAC)
+        - [x] Add protocol versioning support (version negotiation with semver comparison)
         - [ ] Add HMAC validation for message integrity (HIGH PRIORITY - implement now)
         - [ ] Complete security tests (oversized messages, invalid data)
     - [ ] Message routing
