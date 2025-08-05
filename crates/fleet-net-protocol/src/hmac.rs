@@ -36,9 +36,23 @@ pub fn generate_hmac(key: &HmacKey, data: &[u8]) -> Vec<u8> {
     result.into_bytes().to_vec()
 }
 
-pub fn validate_hmac() {}
+pub fn validate_hmac(key: &HmacKey, data: &[u8], expected: &[u8]) -> bool {
+    let mut mac =
+        HmacSha256::new_from_slice(key.as_bytes()).expect("HMAC can accept key of any size");
+    mac.update(data);
 
-pub fn extract_hmac_prefix() {}
+    // Verify the HMAC
+    mac.verify_slice(expected).is_ok()
+}
+
+pub fn extract_hmac_prefix(hmac: &[u8]) -> u16 {
+    // Take first 2 types of HMAC and convert to u16
+    if hmac.len() < 2 {
+        return 0;
+    }
+
+    u16::from_be_bytes([hmac[0], hmac[1]])
+}
 
 #[cfg(test)]
 mod tests {
@@ -62,5 +76,41 @@ mod tests {
 
         // HMAC-SHA256 should produce 32 bytes.
         assert_eq!(hmac.len(), 32);
+    }
+
+    #[test]
+    fn test_validate_hmac_success() {
+        // Test validating a correct HMAC
+        let key = HmacKey::from_bytes(b"Validation_Test_Key_32_Bytes!!!!");
+        let message = b"Message to validate HMAC";
+        let hmac = generate_hmac(&key, message);
+
+        assert!(validate_hmac(&key, message, &hmac));
+    }
+
+    #[test]
+    fn test_validate_hmac_failure() {
+        // Test validating an incorrect HMAC
+        let key = HmacKey::from_bytes(b"Validation_Test_Key_32_Bytes!!!!");
+        let message = b"Message to validate HMAC";
+        let wrong_hmac = vec![0u8; 32]; // Incorrect HMAC
+
+        assert!(!validate_hmac(&key, message, &wrong_hmac));
+    }
+
+    #[test]
+    fn test_extract_hmac_prefix() {
+        // Test extracting 16-bit prefix from HMAC
+        let key = HmacKey::from_bytes(b"Prefix_Extraction_Key_32_Bytes!!");
+        let message = b"Message for HMAC prefix extraction";
+
+        let full_hmac = generate_hmac(&key, message);
+        let prefix = extract_hmac_prefix(&full_hmac);
+
+        // Should dbe a u16 value
+        assert!(prefix > 0);
+        // Should match first 2 bytes of HMAC
+        let expected_prefix = u16::from_be_bytes([full_hmac[0], full_hmac[1]]);
+        assert_eq!(prefix, expected_prefix);
     }
 }

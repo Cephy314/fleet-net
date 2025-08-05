@@ -1,3 +1,4 @@
+use crate::hmac::{extract_hmac_prefix, HmacKey};
 use bytes::{Buf, BufMut, BytesMut};
 use fleet_net_common::types::{ChannelId, UserId};
 use std::borrow::Cow;
@@ -76,6 +77,30 @@ impl PacketHeader {
             hmac_prefix: buf.get_u16(),
         })
     }
+
+    pub fn validate_hmac(&self, key: &HmacKey, audio_data: &[u8]) -> bool {
+        // Reconstruct the header bytes without the HMAC prefix & audio data
+        let mut packet_data = Vec::new();
+
+        // Add header fields (excluding hmac_prefix)
+        packet_data.extend_from_slice(&self.channel_id.to_be_bytes());
+        packet_data.extend_from_slice(&self.user_id.to_be_bytes());
+        packet_data.extend_from_slice(&self.sequence.to_be_bytes());
+        packet_data.extend_from_slice(&self.timestamp.to_be_bytes());
+        packet_data.push(self.signal_strength);
+        packet_data.push(self.frame_duration);
+        packet_data.extend_from_slice(&self.audio_length.to_be_bytes());
+
+        // Add the audio data
+        packet_data.extend_from_slice(audio_data);
+
+        // Generate HMAC for the entire packet (header + audio)
+        let full_hmac = crate::hmac::generate_hmac(key, &packet_data);
+        let calculated_prefix = extract_hmac_prefix(&full_hmac);
+
+        // Compare with the stored prefix
+        self.hmac_prefix == calculated_prefix
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
@@ -129,6 +154,7 @@ impl AudioPacket {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::hmac::{extract_hmac_prefix, generate_hmac};
 
     #[test]
     fn test_packet_round_trip() {
@@ -159,5 +185,52 @@ mod tests {
         assert_eq!(parsed_packet.header.channel_id, header.channel_id);
         assert_eq!(parsed_packet.header.user_id, header.user_id);
         assert_eq!(parsed_packet.opus_payload, packet.opus_payload);
+    }
+
+    #[test]
+    fn test_packet_hmac_validation() {
+        // Create a test packet header
+        let header = PacketHeader {
+            channel_id: 1,
+            user_id: 42,
+            sequence: 1234,
+            timestamp: 5000,
+            signal_strength: 255,
+            frame_duration: 20,
+            audio_length: 256,
+            hmac_prefix: 0, // Will be calculated
+        };
+
+        // Create session key
+
+        let key = HmacKey::from_bytes(b"test_session_key_32_bytes_long!!");
+
+        // Serialize header without HMAC prefix
+        let mut header_bytes = Vec::new();
+        header_bytes.extend_from_slice(&header.channel_id.to_be_bytes());
+        header_bytes.extend_from_slice(&header.user_id.to_be_bytes());
+        header_bytes.extend_from_slice(&header.sequence.to_be_bytes());
+        header_bytes.extend_from_slice(&header.timestamp.to_be_bytes());
+        header_bytes.push(header.signal_strength);
+        header_bytes.push(header.frame_duration);
+        header_bytes.extend_from_slice(&header.audio_length.to_be_bytes());
+
+        // Add fake audio data
+        let audio_data = [0xAA; 256];
+        let mut packet_data = header_bytes.clone();
+        packet_data.extend_from_slice(&audio_data);
+
+        // Generate HMAC for entire packet (header + audio)
+        let full_hmac = generate_hmac(&key, &packet_data);
+        let hmac_prefix = extract_hmac_prefix(&full_hmac);
+
+        // Create header with correct HMAC prefix
+        let verified_header = PacketHeader {
+            hmac_prefix,
+            ..header
+        };
+
+        // Verify we can validate it
+        assert!(verified_header.validate_hmac(&key, &audio_data));
     }
 }
