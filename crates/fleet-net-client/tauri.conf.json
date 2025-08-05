@@ -1,0 +1,17 @@
+{
+  "$schema": "https://tauri.app/config/2",
+    "productName": "Fleet Net",
+    "identifier": "com.fleet-net.app",
+  "build": {
+    "frontendDist": "ui"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Fleet Net",
+        "width": 1200,
+        "height": 800
+      }
+    ]
+  }
+}

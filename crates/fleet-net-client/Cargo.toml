@@ -1,0 +1,44 @@
+[package]
+name = "fleet-net-client"
+version = "0.1.0"
+edition = "2021"
+authors = ["Victoria Beauray Sagady <cephypi@pm.me>"]
+description = "Fleet Net desktop client"
+license = "AGPL-3"
+
+[[bin]]
+name = "fleet-net-client"
+path = "src-tauri/src/main.rs"
+
+[build-dependencies]
+tauri-build = { version = "2.3.1", features = [] }
+
+[dependencies]
+# Internal dependencies
+fleet-net-common = { path = "../fleet-net-common" }
+fleet-net-protocol = { path = "../fleet-net-protocol" }
+fleet-net-audio = { path = "../fleet-net-audio" }
+
+# Use workspace dependencies where possible
+tokio = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+anyhow = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+
+
+# Client-Specific Dependencies
+tauri = "2.3.1"
+
+# Platform-specific dependencies
+[target.'cfg(target_os = "windows")'.dependencies]
+windows = { version = "0.61.3", features = ["Win32_System_Com"] }
+
+[target.'cfg(target_os = "macos")'.dependencies]
+cocoa = "0.26"
+objc = "0.2"
+
+[features]
+default = ["custom-protocol"]
+custom-protocol = ["tauri/custom-protocol"]

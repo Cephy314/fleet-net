@@ -1,0 +1,25 @@
+[package]
+name = "fleet-net-protocol"
+version = "0.1.0"
+edition = "2021"
+authors = ["Victoria Beauray Sagady <cephypi@pm.me>"]
+description = "Network protocol definitions for Fleet Net"
+license = "AGPL-3"
+
+[dependencies]
+#internal dependencies
+fleet-net-common = { path = "../fleet-net-common" }
+
+# Use workspace dependencies where possible
+serde = { workspace = true }
+anyhow = { workspace = true }
+thiserror = { workspace = true }
+serde_json = { workspace = true }
+tokio = { workspace = true }
+semver = { workspace = true }
+
+# Protocol-specific dependencies
+bincode = { version = "2.0.1", features = ["serde"] }
+bytes = { version = "1.10.1", features = ["serde"] }
+hmac = "0.12"
+sha2 = "0.10"

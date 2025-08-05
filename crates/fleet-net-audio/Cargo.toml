@@ -1,0 +1,23 @@
+[package]
+name = "fleet-net-audio"
+version = "0.1.0"
+edition = "2021"
+authors = ["Victoria Beauray Sagady <cephypi@pm.me>"]
+description = "Audio streaming and processing for Fleet Net"
+license = "AGPL-3"
+
+[dependencies]
+# Internal dependencies
+fleet-net-common = { path = "../fleet-net-common" }
+fleet-net-protocol = { path = "../fleet-net-protocol" }
+
+# Use workspace dependencies where possible
+anyhow = { workspace = true }
+tracing = { workspace = true }
+
+# Audio-specific dependencies
+opus = { version = "0.3" }      # Opus codec for audio encoding/decoding
+cpal = { version = "0.16.0" }   # Cross-platform audio I/O library
+rubato = { version = "0.16.2" } # Resampling library
+ringbuf = "0.4.8"               # Ring buffer for audio data
+dasp = { version = "0.11" }     # Digital audio signal processing library

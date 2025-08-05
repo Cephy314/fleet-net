@@ -1,0 +1,38 @@
+repos:
+  - repo: local
+    hooks:
+      - id: fmt
+        name: cargo fmt
+        entry: cargo fmt --all -- --check
+        language: system
+        types: [rust]
+        pass_filenames: false
+
+      - id: clippy
+        name: cargo clippy
+        entry: cargo clippy --all-targets --all-features -- -D warnings
+        language: system
+        types: [rust]
+        pass_filenames: false
+
+      - id: test
+        name: cargo test
+        entry: cargo test --all
+        language: system
+        types: [rust]
+        pass_filenames: false
+
+      - id: check
+        name: cargo check
+        entry: cargo check --all
+        language: system
+        types: [rust]
+        pass_filenames: false
+
+  # Optional: Add taplo for TOML formatting
+  - repo: https://github.com/ComPWA/mirrors-taplo
+    rev: v0.8.1
+    hooks:
+      - id: taplo
+        name: Format TOML files
+        files: \.toml$

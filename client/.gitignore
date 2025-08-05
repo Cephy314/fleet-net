@@ -1,9 +1,0 @@
- # Electron specific
-  out/
-  dist/
-  release/
-  app/dist/
-
-  # Renderer build files
-  .cache/
-  .parcel-cache/

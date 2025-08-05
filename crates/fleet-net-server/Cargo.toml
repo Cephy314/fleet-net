@@ -1,0 +1,37 @@
+[package]
+name = "fleet-net-server"
+version = "0.1.0"
+edition = "2021"
+authors = ["Victoria Beauray Sagady <cephypi@pm.me>"]
+description = "Fleet Net server for voice communication"
+license = "AGPL-3"
+
+[[bin]]
+name = "fleet-net-server"
+path = "src/main.rs"
+
+[dependencies]
+# Internal dependencies
+fleet-net-common = { path = "../fleet-net-common" }
+fleet-net-protocol = { path = "../fleet-net-protocol" }
+
+# Workspace dependencies
+tokio = { workspace = true }
+serde = { workspace = true }
+anyhow = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+
+# Server-specific dependencies
+axum = "0.8.4" # Web framework for building the server
+tower = "0.5.2" # Middleware
+sqlx = { version = "0.8.6", features = [
+  "sqlite",
+  "runtime-tokio-rustls",
+] } # SQLite database support
+reqwest = { version = "0.12.22", features = [
+  "json",
+] } # HTTP client for external API calls
+dashmap = "6.1.0" # Concurrent hash map for shared state
+config = "0.15.13" # Configuration management
+jsonwebtoken = "9.3.1" # JWT support

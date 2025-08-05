@@ -60,21 +60,17 @@ Fleet Net is a real-time voice communication system designed specifically for MI
 - **Normal**: 32 kbps, 20ms frames, Complexity 8
 - **Low**: 16 kbps, 20ms frames, Complexity 6
 
-*Changed from initial tri-casting approach to single server-configured quality*
-
 ## Client Architecture
 
 ### Technology Stack
-- **Electron** framework for cross-platform compatibility
-- **Node.js native audio** (PortAudio) in main process
+- **RUST Tauri** framework for cross-platform compatibility
+- **RUST Native Audio** (PortAudio or similar) in main process
 - **Pure UI** in renderer process (no audio handling)
-- **Worker threads** for audio processing
 
 ### Audio Input Pipeline
-1. **Web-Audio**: Use the render thread with worklets to capture and playback audio.
-2. **150ms circular pre-buffer** (prevents word clipping)
-3. **200ms post-buffer** on PTT release
-4. **Global input buffer** feeding all radios (not per-radio buffers)
+1. **150ms circular pre-buffer** (prevents word clipping)
+2. **200ms post-buffer** on PTT release
+3. **Global input buffer** feeding all radios (not per-radio buffers)
 
 ### PTT (Push-To-Talk) System
 - **Multi-input support**: Keyboard, gamepad, Stream Deck
@@ -103,7 +99,7 @@ Fleet Net is a real-time voice communication system designed specifically for MI
 ## Server Architecture
 
 ### Technology Stack
-- **Node.js** with native C++ addons for performance-critical operations
+- **RUST** with native C++ addons for performance-critical operations
 - **Worker thread pool** for parallel processing
 - **SQLite** for permission storage and configuration
 

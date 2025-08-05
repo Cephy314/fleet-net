@@ -1,0 +1,8 @@
+# Rust edition to use
+edition = "2021"
+
+# Maximum width of each line
+max_width = 100
+
+# Use field init shorthand
+use_field_init_shorthand = true
