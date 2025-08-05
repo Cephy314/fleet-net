@@ -1336,9 +1336,11 @@ dependencies = [
  "bincode",
  "bytes",
  "fleet-net-common",
+ "hmac",
  "semver",
  "serde",
  "serde_json",
+ "sha2",
  "thiserror 2.0.12",
  "tokio",
 ]
