@@ -1,10 +1,10 @@
 [workspace]
 members = [
-  "crates/fleet-net-client",
-  "crates/fleet-net-server",
-  "crates/fleet-net-common",
-  "crates/fleet-net-protocol",
-  "crates/fleet-net-audio",
+    "crates/fleet-net-client",
+    "crates/fleet-net-server",
+    "crates/fleet-net-common",
+    "crates/fleet-net-protocol",
+    "crates/fleet-net-audio",
 ]
 resolver = "2"
 
@@ -18,5 +18,7 @@ tracing = "0.1"
 tracing-subscriber = { version = "0.3.19", features = ["env-filter", "fmt"] }
 thiserror = "2.0.12"
 semver = { version = "1.0", features = ["serde"] }
-
+tokio-rustls = { version = "0.26.2", features = ["ring"] }
+rustls = { version = "0.23.31", features = ["ring"] }
+rustls-pemfile = "2.2.0"
 # ... other common deps

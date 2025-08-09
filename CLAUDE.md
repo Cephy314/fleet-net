@@ -181,3 +181,6 @@ mod tests {
     }
 }
 ```
+
+## Code Review and Change Summaries
+- **ALWAYS** provide a summary of suggested changes with specific line numbers and code snippets instead of printing out the entire fixed file in a code display.

@@ -79,6 +79,12 @@ pub enum FleetNetError {
     /// - Channel subscription denials
     #[error("Permission error: {0}")]
     PermissionError(Cow<'static, str>),
+
+    #[error("File systemerror: {0}")]
+    FileSystemError(Cow<'static, str>),
+
+    #[error("Encryption error: {0}")]
+    EncryptionError(Cow<'static, str>),
 }
 
 impl From<serde_json::Error> for FleetNetError {
