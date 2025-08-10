@@ -1,15 +1,20 @@
 use crate::message::ControlMessage;
 use fleet_net_common::error::FleetNetError;
 use std::borrow::Cow;
-use tokio::io::{AsyncReadExt, AsyncWriteExt};
-use tokio::net::TcpStream;
+use tokio::io::{AsyncRead, AsyncReadExt, AsyncWrite, AsyncWriteExt};
 
-pub struct Connection {
-    stream: TcpStream,
+pub struct Connection<S>
+where
+    S: AsyncRead + AsyncWrite + Unpin + Send,
+{
+    stream: S,
 }
 
-impl Connection {
-    pub fn new(stream: TcpStream) -> Self {
+impl<S> Connection<S>
+where
+    S: AsyncRead + AsyncWrite + Unpin + Send,
+{
+    pub fn new(stream: S) -> Self {
         Self { stream }
     }
 
@@ -57,34 +62,14 @@ impl Connection {
 mod tests {
     use super::*;
     use crate::message::ControlMessage;
+    use fleet_test_support::connected_tcp_pair;
     use std::borrow::Cow;
-    use tokio::net::{TcpListener, TcpStream};
-
-    // Helper function to create a connected pair of TCP streams.
-    async fn create_test_connection_pair() -> (TcpStream, TcpStream) {
-        let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
-        let addr = listener.local_addr().unwrap();
-
-        // Connect from client side
-        let client_future = TcpStream::connect(addr);
-
-        // Accept on server side
-        let server_future = async move {
-            let (stream, _) = listener.accept().await.unwrap();
-            stream
-        };
-
-        // Wait for both to complete.
-        let (client, server) = tokio::join!(client_future, server_future);
-
-        (server, client.unwrap())
-    }
 
     // Test connection handles message framing and deframing correctly.
     #[tokio::test]
     async fn test_connection_handles_message_framing() {
         // Set up connected streams.
-        let (server_stream, client_stream) = create_test_connection_pair().await;
+        let (server_stream, client_stream) = connected_tcp_pair().await.unwrap();
 
         // Create connections
         let mut server_connection = Connection::new(server_stream);
@@ -128,59 +113,177 @@ mod tests {
 
 #[cfg(test)]
 mod tls_tests {
+    use crate::connection::Connection;
+    use crate::message::ControlMessage;
+    use crate::tls::TlsConfig;
+    use fleet_test_support::{generate_test_certs, init_crypto_once};
+    use std::borrow::Cow;
+    use tokio::net::{TcpListener, TcpStream};
+    use tokio_rustls::{TlsAcceptor, TlsConnector};
+
+    // Helper to create TLS acceptor from certificate bundle
+    async fn create_tls_server(
+        bundle: &fleet_test_support::TestCertBundle,
+    ) -> (TlsAcceptor, TcpListener, std::net::SocketAddr) {
+        let server_config = TlsConfig::new_server(&bundle.cert_path, &bundle.key_path)
+            .expect("Failed to create server config");
+        let acceptor = TlsAcceptor::from(server_config.server_config.unwrap());
+        let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let addr = listener.local_addr().unwrap();
+        (acceptor, listener, addr)
+    }
+
+    // Helper to create TLS connector from certificate bundle
+    fn create_tls_client(bundle: &fleet_test_support::TestCertBundle) -> TlsConnector {
+        let client_config =
+            TlsConfig::new_client(&bundle.cert_path).expect("Failed to create client config");
+        TlsConnector::from(client_config.client_config.unwrap())
+    }
+
+    // Helper to attempt TLS connection
+    async fn try_tls_connect(
+        connector: &TlsConnector,
+        addr: std::net::SocketAddr,
+        hostname: &str,
+    ) -> Result<tokio_rustls::client::TlsStream<TcpStream>, std::io::Error> {
+        let tcp_stream = TcpStream::connect(addr).await?;
+        let domain = rustls::pki_types::ServerName::try_from(hostname.to_owned())
+            .map_err(|e| std::io::Error::new(std::io::ErrorKind::InvalidInput, e))?;
+        connector.connect(domain, tcp_stream).await
+    }
+
     #[tokio::test]
     async fn test_tls_connection_establishes_secure_channel() {
+        init_crypto_once();
         // Given: A server with valid TLS certificates
-        // let cert_path = "test_certs/server.crt";
-        // let key_path = "test_certs/server.key";
+        let bundle = generate_test_certs("localhost");
 
-        // When: A client connects using TLS
-        // Then: The connection should be established successfully
-        // And: Messages should be encrypted in transit
+        // Create server and client
+        let (acceptor, listener, addr) = create_tls_server(&bundle).await;
+        let connector = create_tls_client(&bundle);
 
-        // This test verifies that:
-        // 1. TLS handshake completes successfully
-        // 2. Data sent through the connection is encrypted
-        // 3. Both sides can exchange ControlMessages over TLS
+        // Server task - accept and wrap with TLS
+        let server_task = tokio::spawn(async move {
+            let (tcp_stream, _) = listener.accept().await.unwrap();
+            let tls_stream = acceptor.accept(tcp_stream).await.unwrap();
+
+            // Create connection with TLS stream and send message
+            let mut conn = Connection::new(tls_stream);
+            let msg = ControlMessage::ServerInfo {
+                name: "TLSTestServer".to_string(),
+                version: Cow::Borrowed("1.0.0"),
+                user_count: 42,
+                channel_count: 5,
+            };
+            conn.write_message(&msg).await.unwrap();
+        });
+
+        // Client connect with TLS
+        let tls_stream = try_tls_connect(&connector, addr, "localhost")
+            .await
+            .expect("Failed to establish TLS connection");
+
+        let mut client_conn = Connection::new(tls_stream);
+        let received = client_conn.read_message().await.unwrap();
+
+        // Then Verify the message was transmitted correctly over TLS
+        match received {
+            ControlMessage::ServerInfo {
+                name,
+                version,
+                user_count,
+                channel_count,
+            } => {
+                assert_eq!(name, "TLSTestServer");
+                assert_eq!(version, Cow::Borrowed("1.0.0"));
+                assert_eq!(user_count, 42);
+                assert_eq!(channel_count, 5);
+            }
+            _ => panic!("Expected ServerInfo message"),
+        }
+
+        server_task.await.unwrap();
     }
 
     #[tokio::test]
-    async fn test_tls_connection_validates_certificates() {
-        // Given: A server with an invalid/self-signed certificate
-        // When: A client attempts to connect with certificate validation enabled
-        // Then: The connection should be rejected
+    async fn test_tls_rejects_untrusted_certificate() {
+        init_crypto_once();
 
-        // Given: A server with a valid certificate
-        // When: A client connects with certificate validation
-        // Then: The connection should succeed
+        // Generate different certificates.
+        let server_bundle = generate_test_certs("localhost");
+        let untrusted_bundle = generate_test_certs("untrusted-ca");
+
+        // Setup server with its certificates.
+        let (acceptor, listener, addr) = create_tls_server(&server_bundle).await;
+
+        // Setup client with untrusted CA
+        let connector = create_tls_client(&untrusted_bundle);
+
+        // Server accepts connection (byt handshake will fail)
+        let server_task = tokio::spawn(async move {
+            let (tcp_stream, _) = listener.accept().await.unwrap();
+            let _ = acceptor.accept(tcp_stream).await; // Ignore result
+        });
+
+        // Client connection should fail
+        let result = try_tls_connect(&connector, addr, "localhost").await;
+        assert!(
+            result.is_err(),
+            "Connection should be rejected due to untrusted certificate"
+        );
+
+        let error_msg = format!("{:?}", result.err().unwrap());
+        assert!(
+            error_msg.contains("CertificateUnknown")
+                || error_msg.contains("InvalidCertificate")
+                || error_msg.contains("UnknownIssuer"),
+            "Expected certificate validation error, got: {error_msg}"
+        );
+
+        server_task.await.unwrap();
     }
 
     #[tokio::test]
-    async fn test_tls_connection_supports_client_certificates() {
-        // Given: A server configured to require client certificates
-        // When: A client connects without a certificate
-        // Then: The connection should be rejected
+    async fn test_tls_accepts_trusted_certificate() {
+        init_crypto_once();
 
-        // When: A client connects with a valid certificate
-        // Then: The connection should succeed
-        // And: The server should be able to identify the client
-    }
+        // Use same certificate for server and client trust
+        let bundle = generate_test_certs("localhost");
 
-    #[tokio::test]
-    async fn test_tls_connection_handles_protocol_versions() {
-        // Given: A server configured to accept only TLS 1.2 and 1.3
-        // When: A client attempts to connect with TLS 1.1
-        // Then: The connection should be rejected
+        // Setup server and client with same cert
+        let (acceptor, listener, addr) = create_tls_server(&bundle).await;
+        let connector = create_tls_client(&bundle);
 
-        // When: A client connects with TLS 1.2 or 1.3
-        // Then: The connection should succeed
-    }
+        // Server task
+        let server_task = tokio::spawn(async move {
+            let (stream, _) = listener.accept().await.unwrap();
+            let tls_stream = acceptor.accept(stream).await.unwrap();
 
-    #[tokio::test]
-    async fn test_plain_and_tls_connections_use_same_interface() {
-        // Given: Two connections, one plain TCP and one TLS
-        // When: Sending the same ControlMessage through both
-        // Then: Both should successfully transmit the message
-        // This ensures our abstraction works correctly
+            let mut conn = Connection::new(tls_stream);
+            let msg = ControlMessage::ServerInfo {
+                name: "TrustedServer".to_string(),
+                version: Cow::Borrowed("1.0.0"),
+                user_count: 1,
+                channel_count: 1,
+            };
+            conn.write_message(&msg).await.unwrap();
+        });
+
+        // Client connects successfully
+        let tls_stream = try_tls_connect(&connector, addr, "localhost")
+            .await
+            .expect("Connection should succeed with trusted certificate");
+
+        let mut client_conn = Connection::new(tls_stream);
+        let received = client_conn.read_message().await.unwrap();
+
+        match received {
+            ControlMessage::ServerInfo { name, .. } => {
+                assert_eq!(name, "TrustedServer");
+            }
+            _ => panic!("Expected ServerInfo message"),
+        }
+
+        server_task.await.unwrap();
     }
 }

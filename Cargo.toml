@@ -1,10 +1,10 @@
 [workspace]
 members = [
-    "crates/fleet-net-client",
-    "crates/fleet-net-server",
-    "crates/fleet-net-common",
-    "crates/fleet-net-protocol",
-    "crates/fleet-net-audio",
+  "crates/fleet-net-client",
+  "crates/fleet-net-server",
+  "crates/fleet-net-common",
+  "crates/fleet-net-protocol",
+  "crates/fleet-net-audio",
 ]
 resolver = "2"
 

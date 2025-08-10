@@ -1,0 +1,19 @@
+[package]
+name = "fleet-test-support"
+version = "0.1.0"
+edition = "2021"
+authors = ["Victoria Beauray Sagady <cephypi@pm.me>"]
+description = "Test support utilities for Fleet Net"
+license = "AGPL-3"
+publish = false                                       # Never publish test helpers
+
+[dependencies]
+tokio = { version = "1.43", features = ["full"] }
+rustls = { version = "0.23", features = ["ring"] }
+rustls-pemfile = "2.2"
+tokio-rustls = "0.26"
+rcgen = "0.13"
+once_cell = "1.19"
+tempfile = "3.20"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }

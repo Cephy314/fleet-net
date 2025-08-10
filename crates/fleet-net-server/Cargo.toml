@@ -34,4 +34,14 @@ reqwest = { version = "0.12.22", features = [
 ] } # HTTP client for external API calls
 dashmap = "6.1.0" # Concurrent hash map for shared state
 config = "0.15.13" # Configuration management
-jsonwebtoken = "9.3.1" # JWT support
+jsonwebtoken = "9.3.1"
+tempfile = "3.20.0"
+tokio-rustls = "0.26.2"
+rustls = "0.23.31"
+rcgen = "0.13.2" # JWT support
+
+[dev-dependencies]
+fleet-test-support = { path = "../fleet-test-support" }
+fleet-net-protocol = { path = "../fleet-net-protocol", features = [
+  "test-helpers",
+] }

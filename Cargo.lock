@@ -1404,6 +1404,7 @@ dependencies = [
  "bincode",
  "bytes",
  "fleet-net-common",
+ "fleet-test-support",
  "hmac",
  "rcgen",
  "rustls",
@@ -1428,12 +1429,32 @@ dependencies = [
  "dashmap",
  "fleet-net-common",
  "fleet-net-protocol",
+ "fleet-test-support",
  "jsonwebtoken",
+ "rcgen",
  "reqwest",
+ "rustls",
  "serde",
  "sqlx",
+ "tempfile",
  "tokio",
+ "tokio-rustls",
  "tower",
+ "tracing",
+ "tracing-subscriber",
+]
+
+[[package]]
+name = "fleet-test-support"
+version = "0.1.0"
+dependencies = [
+ "once_cell",
+ "rcgen",
+ "rustls",
+ "rustls-pemfile",
+ "tempfile",
+ "tokio",
+ "tokio-rustls",
  "tracing",
  "tracing-subscriber",
 ]

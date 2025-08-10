@@ -1,3 +1,5 @@
+pub mod server;
+
 #[tokio::main]
 async fn main() {
     // Initialize tracing for logging

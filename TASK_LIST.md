@@ -25,6 +25,14 @@
     - [ ] Remove HMAC prefix from packets after DTLS implementation (saves 2 bytes per packet)
     - [ ] DTLS provides full authentication/encryption, making HMAC redundant
 - [ ] Implement TLS 1.3 for TCP control channel
+    - [x] TLS configuration module created with tests
+    - [x] Certificate loading and validation tests
+    - [x] Cipher suite security tests
+    - [x] Connection struct now supports TLS streams (generic implementation)
+    - [x] TLS connection establishment tests
+    - [x] Certificate validation tests (reject untrusted, accept trusted)
+    - [ ] Integrate TLS into server TCP listener
+    - [ ] Client TLS connection initialization
 - [ ] Optimize packet size for minimal bandwidth usage
 
 ### Server Implementation (Started)
@@ -94,6 +102,8 @@
 - [x] Connection struct moved to protocol crate (shared between client/server)
 - [x] TLS configuration for client and server (implemented in protocol crate)
 - [x] HMAC implementation with key management (implemented in protocol crate)
+- [x] Connection struct made generic to support both TCP and TLS streams
+- [x] Comprehensive TLS connection tests (establishment, certificate validation)
 
 ## Future Enhancements
 - [ ] Database integration for persistent storage

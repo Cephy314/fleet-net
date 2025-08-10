@@ -141,42 +141,20 @@ impl TlsConfig {
 mod tls_config_tests {
     use crate::tls::TlsConfig;
     use fleet_net_common::error::FleetNetError;
+    use fleet_test_support::{generate_test_certs, init_crypto_once};
     use std::fs;
-    use std::sync::{Arc, Once};
+    use std::sync::Arc;
     use tempfile::TempDir;
-
-    static INIT: Once = Once::new();
-
-    fn init_crypto() {
-        INIT.call_once(|| {
-            // Install the ring crypto provider for tests
-            rustls::crypto::ring::default_provider()
-                .install_default()
-                .expect("Failed to install crypto provider");
-        });
-    }
 
     #[test]
     fn test_load_server_certificates() {
-        init_crypto();
-        use rcgen::{generate_simple_self_signed, CertifiedKey};
-        use tempfile::TempDir;
+        init_crypto_once();
 
         // Given: Generate a valid self-signed certificate and key
-        let subject_alt_names = vec!["localhost".to_string()];
-        let CertifiedKey { cert, key_pair } =
-            generate_simple_self_signed(subject_alt_names).unwrap();
-
-        let temp_dir = TempDir::new().unwrap();
-        let cert_path = temp_dir.path().join("test_cert.pem");
-        let key_path = temp_dir.path().join("test_key.pem");
-
-        // Write the generated certificate and key to files
-        fs::write(&cert_path, cert.pem()).unwrap();
-        fs::write(&key_path, key_pair.serialize_pem()).unwrap();
+        let bundle = generate_test_certs("localhost");
 
         // When: Loading them for server configuration
-        let tls_config = TlsConfig::new_server(&cert_path, &key_path);
+        let tls_config = TlsConfig::new_server(&bundle.cert_path, &bundle.key_path);
 
         // Then: Should successfully create a TLS server config
         assert!(
@@ -198,23 +176,13 @@ mod tls_config_tests {
 
     #[test]
     fn test_load_client_certificates() {
-        init_crypto();
-        use rcgen::{generate_simple_self_signed, CertifiedKey};
-        use tempfile::TempDir;
+        init_crypto_once();
 
         // Given: A CA certificate for validation
-        let subject_alt_names = vec!["ca.localhost".to_string()];
-        let CertifiedKey { cert: ca_cert, .. } =
-            generate_simple_self_signed(subject_alt_names).unwrap();
-
-        let temp_dir = TempDir::new().unwrap();
-        let ca_cert_path = temp_dir.path().join("ca_cert.pem");
-
-        // Write the CA certificate to a file
-        fs::write(&ca_cert_path, ca_cert.pem()).unwrap();
+        let ca_bundle = generate_test_certs("ca.localhost");
 
         // When: Creating a client configuration
-        let tls_config = TlsConfig::new_client(&ca_cert_path);
+        let tls_config = TlsConfig::new_client(&ca_bundle.cert_path);
 
         // Then: Should successfully create a TLS client config
         assert!(
@@ -236,7 +204,7 @@ mod tls_config_tests {
 
     #[test]
     fn test_reject_missing_certificate_files() {
-        init_crypto();
+        init_crypto_once();
         use std::path::Path;
         // Test 1: None-existent files should return file system error.
         let result = TlsConfig::new_server(
@@ -254,7 +222,7 @@ mod tls_config_tests {
 
     #[test]
     fn test_reject_empty_certification_files() {
-        init_crypto();
+        init_crypto_once();
         let temp_dir = TempDir::new().unwrap();
         let empty_cert = temp_dir.path().join("empty_cert.pem");
         let empty_key = temp_dir.path().join("empty_key.pem");
@@ -273,7 +241,7 @@ mod tls_config_tests {
 
     #[test]
     fn test_reject_invalid_pem_data() {
-        init_crypto();
+        init_crypto_once();
 
         let temp_dir = TempDir::new().unwrap();
         let invalid_cert = temp_dir.path().join("invalid_cert.pem");
@@ -289,24 +257,13 @@ mod tls_config_tests {
 
     #[test]
     fn test_tls_config_cipher_suites() {
-        init_crypto();
-        use rcgen::{generate_simple_self_signed, CertifiedKey};
+        init_crypto_once();
 
-        // Creata a valid self-signed certificate and key
-        let subject_alt_names = vec!["localhost".to_string()];
-        let CertifiedKey { cert, key_pair } =
-            generate_simple_self_signed(subject_alt_names).unwrap();
+        // Create a valid self-signed certificate and key
+        let bundle = generate_test_certs("localhost");
 
-        let temp_dir = TempDir::new().unwrap();
-        let cert_path = temp_dir.path().join("test_cert.pem");
-        let key_path = temp_dir.path().join("test_key.pem");
-
-        // Write the generated certificate and key to files
-        fs::write(&cert_path, cert.pem()).unwrap();
-        fs::write(&key_path, key_pair.serialize_pem()).unwrap();
-
-        let tls_config =
-            TlsConfig::new_server(&cert_path, &key_path).expect("Should create valid TLS config");
+        let tls_config = TlsConfig::new_server(&bundle.cert_path, &bundle.key_path)
+            .expect("Should create valid TLS config");
 
         let server_config = tls_config.server_config.unwrap();
 
