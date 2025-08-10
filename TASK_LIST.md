@@ -20,19 +20,26 @@
     - [ ] Add property-based testing for packet serialization
     - [ ] Test session timeout behaviors
 
+### Security Implementation (HIGH PRIORITY)
+- [ ] Implement DTLS for UDP audio streams (as specified in FLEET-NET.md)
+    - [ ] Remove HMAC prefix from packets after DTLS implementation (saves 2 bytes per packet)
+    - [ ] DTLS provides full authentication/encryption, making HMAC redundant
+- [ ] Implement TLS 1.3 for TCP control channel
+- [ ] Optimize packet size for minimal bandwidth usage
+
 ### Server Implementation (Started)
 - [x] Basic server setup with logging
-- [ ] TCP control channel implementation
+- [ ] TCP control channel implementation (note: protocol logic in fleet-net-protocol crate)
     - [ ] Connection handling
-        - [x] Message framing with length prefix
-        - [x] JSON serialization/deserialization
+        - [x] Message framing with length prefix (in protocol crate)
+        - [x] JSON serialization/deserialization (in protocol crate)
         - [x] Add protocol versioning support (version negotiation with semver comparison)
-        - [ ] Add HMAC validation for message integrity (HIGH PRIORITY - implement now)
+        - [x] Add HMAC validation for message integrity (temporary - will be removed with DTLS)
         - [ ] Complete security tests (oversized messages, invalid data)
     - [ ] Message routing
     - [ ] Authentication flow
 - [ ] UDP audio packet forwarding
-    - [ ] Packet validation with HMAC
+    - [x] Packet validation with HMAC (temporary - will be removed with DTLS)
     - [ ] Channel-based routing
     - [ ] Jitter buffer implementation
 - [ ] Session management
@@ -85,6 +92,8 @@
 - [x] Common module with session helper methods
 - [x] Protocol module with TCP/UDP implementations
 - [x] Connection struct moved to protocol crate (shared between client/server)
+- [x] TLS configuration for client and server (implemented in protocol crate)
+- [x] HMAC implementation with key management (implemented in protocol crate)
 
 ## Future Enhancements
 - [ ] Database integration for persistent storage
@@ -97,6 +106,7 @@
 - [ ] Pre-allocate vectors in packet parsing
 - [ ] Profile and optimize hot paths
 - [ ] Consider arena allocation for short-lived objects
+- [ ] Remove 16-bit HMAC prefix from packet header after DTLS implementation (saves 2 bytes/packet)
 
 ## Documentation
 - [ ] API documentation
