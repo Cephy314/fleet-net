@@ -31,14 +31,19 @@
     - [x] Connection struct now supports TLS streams (generic implementation)
     - [x] TLS connection establishment tests
     - [x] Certificate validation tests (reject untrusted, accept trusted)
-    - [ ] Integrate TLS into server TCP listener
+    - [x] Basic TLS server implementation (accepts single connection)
+    - [ ] Multiple concurrent TLS client support
+    - [ ] Non-TLS fallback mode
+    - [ ] Connection loop for handling multiple clients
     - [ ] Client TLS connection initialization
 - [ ] Optimize packet size for minimal bandwidth usage
 
-### Server Implementation (Started)
+### Server Implementation (In Progress)
 - [x] Basic server setup with logging
+- [x] Server struct with TLS support
+- [x] Basic TLS connection acceptance
 - [ ] TCP control channel implementation (note: protocol logic in fleet-net-protocol crate)
-    - [ ] Connection handling
+    - [ ] Connection handling (partially complete)
         - [x] Message framing with length prefix (in protocol crate)
         - [x] JSON serialization/deserialization (in protocol crate)
         - [x] Add protocol versioning support (version negotiation with semver comparison)
@@ -104,6 +109,16 @@
 - [x] HMAC implementation with key management (implemented in protocol crate)
 - [x] Connection struct made generic to support both TCP and TLS streams
 - [x] Comprehensive TLS connection tests (establishment, certificate validation)
+- [x] Test support crate (fleet-test-support) with common test helpers
+    - [x] Centralized crypto provider initialization
+    - [x] Certificate generation utilities
+    - [x] Network test helpers (TCP pairs, mock connections)
+    - [x] I/O simulation tools (slow readers, disruptable streams)
+    - [x] Time helpers (timeouts, eventual consistency)
+    - [x] TLS test configuration helpers
+- [x] Refactored all tests to use shared test helpers
+- [x] Protocol test helpers behind feature flag
+- [x] Basic TLS server that accepts connections
 
 ## Future Enhancements
 - [ ] Database integration for persistent storage

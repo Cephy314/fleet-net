@@ -26,7 +26,11 @@
     </cargoProject>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d48f0b7e-eee4-4788-917f-108f769a3ee9" name="Changes" comment="" />
+    <list default="true" id="d48f0b7e-eee4-4788-917f-108f769a3ee9" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TASK_LIST.md" beforeDir="false" afterPath="$PROJECT_DIR$/TASK_LIST.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/fleet-net-server/src/server.rs" beforeDir="false" afterPath="$PROJECT_DIR$/crates/fleet-net-server/src/server.rs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -214,6 +218,7 @@
       <workItem from="1754682979306" duration="4080000" />
       <workItem from="1754836964489" duration="10623000" />
       <workItem from="1754855597456" duration="4885000" />
+      <workItem from="1754870336751" duration="3207000" />
     </task>
     <servers />
   </component>

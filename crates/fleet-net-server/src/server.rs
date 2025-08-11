@@ -76,14 +76,59 @@ impl Server {
 
         Ok(())
     }
+
+    pub async fn run(&self) -> Result<(), FleetNetError> {
+        let listener = self
+            .listener
+            .as_ref()
+            .ok_or(FleetNetError::NetworkError(Cow::Borrowed(
+                "Server not started",
+            )))?;
+
+        loop {
+            let (stream, addr) = listener.accept().await?;
+            info!("Accepted connection from {addr}");
+
+            // CLone what we need for the spawned task.
+            let acceptor = self.tls_acceptor.clone();
+
+            // Spawn a task to handle this connection
+            tokio::spawn(async move {
+                if let Some(acceptor) = acceptor {
+                    match acceptor.accept(stream).await {
+                        Ok(tls_stream) => {
+                            let mut conn = Connection::new(tls_stream);
+
+                            // Send server info message
+                            let msg = ControlMessage::ServerInfo {
+                                name: "Fleet Net Server".to_string(),
+                                version: Cow::Borrowed("0.1.0"),
+                                user_count: 0,
+                                channel_count: 0,
+                            };
+
+                            if let Err(e) = conn.write_message(&msg).await {
+                                tracing::error!("Failed to send server info: {e}");
+                            }
+                        }
+                        Err(e) => {
+                            tracing::error!("TLS handshake failed: {e}");
+                        }
+                    }
+                }
+            });
+        }
+    }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
     use fleet_test_support::{generate_test_certs, init_crypto_once};
+    use std::time::Duration;
     use tokio::net::TcpStream;
     use tokio_rustls::TlsConnector;
+    use tracing::log::trace;
 
     #[tokio::test]
     async fn test_server_accepts_single_tls_connection() {
@@ -137,6 +182,78 @@ mod tests {
         }
 
         // Cleanup
+        server_handle.abort();
+    }
+
+    #[tokio::test]
+    async fn test_server_handles_multiple_concurrent_connections() {
+        init_crypto_once();
+
+        // Given: Generate a self-signed certificate for testing
+        let bundle = generate_test_certs("localhost");
+
+        // Create server configuration
+        let config = ServerConfig {
+            bind_address: "127.0.0.1:0".to_string(), // Use port 0 for auto-assignment
+            tls_cert_path: Some(bundle.cert_path.clone()),
+            tls_key_path: Some(bundle.key_path.clone()),
+        };
+
+        // Create and start server
+        let mut server = Server::new(config).expect("Failed to create server");
+        let addr = server.start().await.expect("Failed to start server");
+
+        let server = std::sync::Arc::new(server);
+        let server_clone = server.clone();
+        let server_handle = tokio::spawn(async move { server_clone.run().await });
+
+        tokio::time::sleep(Duration::from_millis(100)).await;
+
+        let num_clients = 3;
+        let mut client_handles = vec![];
+
+        for i in 0..num_clients {
+            //let addr = addr;
+            let cert_path = bundle.cert_path.clone();
+
+            let handle = tokio::spawn(async move {
+                // Create client TLS config
+                let client_config =
+                    TlsConfig::new_client(&cert_path).expect("Failed to create client config");
+                let connector = TlsConnector::from(client_config.client_config.unwrap());
+
+                // connect to server
+                let tcp_stream = TcpStream::connect(addr).await.expect("Failed to connect");
+
+                let domain = rustls::pki_types::ServerName::try_from("localhost".to_owned())
+                    .expect("Invalid domain");
+                let tls_stream = connector
+                    .connect(domain, tcp_stream)
+                    .await
+                    .expect("Failed to establish TLS");
+
+                let mut conn = Connection::new(tls_stream);
+
+                // Read ServerInfo message
+                let msg = conn.read_message().await.expect("Failed to read message");
+
+                // Verify we got ServerInfo
+                match msg {
+                    ControlMessage::ServerInfo { .. } => i,
+                    _ => panic!("Client {i} got unexpected message"),
+                }
+            });
+
+            client_handles.push(handle);
+        }
+
+        // Wait for all clients to complete
+        for handle in client_handles {
+            let client_num = handle.await.expect("Client task failed");
+            trace!("Client {client_num} successfully connected");
+        }
+
+        // Cleanup: stop the server.as
         server_handle.abort();
     }
 }
