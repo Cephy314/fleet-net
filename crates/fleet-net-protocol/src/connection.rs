@@ -62,6 +62,7 @@ where
 mod tests {
     use super::*;
     use crate::message::ControlMessage;
+    use fleet_net_common::types::ServerInfo;
     use fleet_test_support::connected_tcp_pair;
     use std::borrow::Cow;
 
@@ -76,12 +77,12 @@ mod tests {
         let mut client_connection = Connection::new(client_stream);
 
         // Server sends a message
-        let message = ControlMessage::ServerInfo {
-            name: "TestServer".to_string(),
-            version: Cow::Borrowed("1.0.0"),
-            user_count: 0,
-            channel_count: 0,
-        };
+        let message = ControlMessage::ServerInfo(ServerInfo::new(
+            "TestServer".to_string(),
+            Cow::Borrowed("1.0.0"),
+            0,
+            0,
+        ));
 
         // Use a task to avoid deadlock
         let server_task = tokio::spawn(async move {
@@ -93,16 +94,11 @@ mod tests {
 
         // Verify we got the correct message
         match received {
-            ControlMessage::ServerInfo {
-                name,
-                version,
-                user_count,
-                channel_count,
-            } => {
-                assert_eq!(name, "TestServer");
-                assert_eq!(version, Cow::Borrowed("1.0.0"));
-                assert_eq!(user_count, 0);
-                assert_eq!(channel_count, 0);
+            ControlMessage::ServerInfo(info) => {
+                assert_eq!(info.name, "TestServer");
+                assert_eq!(info.version, Cow::Borrowed("1.0.0"));
+                assert_eq!(info.user_count, 0);
+                assert_eq!(info.channel_count, 0);
             }
             _ => panic!("Expected ServerInfo message"),
         }
@@ -116,6 +112,7 @@ mod tls_tests {
     use crate::connection::Connection;
     use crate::message::ControlMessage;
     use crate::tls::TlsConfig;
+    use fleet_net_common::types::ServerInfo;
     use fleet_test_support::{generate_test_certs, init_crypto_once};
     use std::borrow::Cow;
     use tokio::net::{TcpListener, TcpStream};
@@ -169,12 +166,12 @@ mod tls_tests {
 
             // Create connection with TLS stream and send message
             let mut conn = Connection::new(tls_stream);
-            let msg = ControlMessage::ServerInfo {
-                name: "TLSTestServer".to_string(),
-                version: Cow::Borrowed("1.0.0"),
-                user_count: 42,
-                channel_count: 5,
-            };
+            let msg = ControlMessage::ServerInfo(ServerInfo::new(
+                "TLSTestServer".to_string(),
+                Cow::Borrowed("1.0.0"),
+                42,
+                5,
+            ));
             conn.write_message(&msg).await.unwrap();
         });
 
@@ -188,16 +185,11 @@ mod tls_tests {
 
         // Then Verify the message was transmitted correctly over TLS
         match received {
-            ControlMessage::ServerInfo {
-                name,
-                version,
-                user_count,
-                channel_count,
-            } => {
-                assert_eq!(name, "TLSTestServer");
-                assert_eq!(version, Cow::Borrowed("1.0.0"));
-                assert_eq!(user_count, 42);
-                assert_eq!(channel_count, 5);
+            ControlMessage::ServerInfo(info) => {
+                assert_eq!(info.name, "TLSTestServer");
+                assert_eq!(info.version, Cow::Borrowed("1.0.0"));
+                assert_eq!(info.user_count, 42);
+                assert_eq!(info.channel_count, 5);
             }
             _ => panic!("Expected ServerInfo message"),
         }
@@ -260,12 +252,12 @@ mod tls_tests {
             let tls_stream = acceptor.accept(stream).await.unwrap();
 
             let mut conn = Connection::new(tls_stream);
-            let msg = ControlMessage::ServerInfo {
-                name: "TrustedServer".to_string(),
-                version: Cow::Borrowed("1.0.0"),
-                user_count: 1,
-                channel_count: 1,
-            };
+            let msg = ControlMessage::ServerInfo(ServerInfo::new(
+                "TrustedServer".to_string(),
+                Cow::Borrowed("1.0.0"),
+                1,
+                1,
+            ));
             conn.write_message(&msg).await.unwrap();
         });
 
@@ -278,8 +270,8 @@ mod tls_tests {
         let received = client_conn.read_message().await.unwrap();
 
         match received {
-            ControlMessage::ServerInfo { name, .. } => {
-                assert_eq!(name, "TrustedServer");
+            ControlMessage::ServerInfo(info) => {
+                assert_eq!(info.name, "TrustedServer");
             }
             _ => panic!("Expected ServerInfo message"),
         }

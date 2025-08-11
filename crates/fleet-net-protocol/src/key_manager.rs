@@ -62,6 +62,7 @@ mod tests {
     use super::*;
     use crate::hmac::extract_hmac_prefix;
     use crate::message::{ControlMessage, FramedMessage};
+    use fleet_net_common::types::JoinChannelRequest;
 
     #[test]
     fn test_generate_session_key() {
@@ -109,7 +110,7 @@ mod tests {
         let keys = KeyManager::derive_protocol_keys(&session_key);
 
         // Client sends a TCP control message
-        let msg = ControlMessage::JoinChannel { channel_id: 42 };
+        let msg = ControlMessage::JoinChannelRequest(JoinChannelRequest::new(42));
         let framed = FramedMessage::new(&msg, &keys.tcp_key);
 
         // Server receives and validates the message
@@ -117,8 +118,8 @@ mod tests {
 
         // Should get the original message back
         match decoded {
-            ControlMessage::JoinChannel { channel_id } => {
-                assert_eq!(channel_id, 42)
+            ControlMessage::JoinChannelRequest(info) => {
+                assert_eq!(info.channel_id, 42)
             }
             _ => panic!("Unexpected message type"),
         }

@@ -11,9 +11,11 @@
 //! - Uses priority-based role resolution
 //! - Allows partial permission overrides (only override specific permissions)
 
+use crate::error::FleetNetError;
 use crate::types::ChannelId;
 use crate::Role;
 use serde::{Deserialize, Serialize};
+use std::borrow::Cow;
 use std::collections::HashMap;
 
 /// Represents a channel in the Fleet Net system.
@@ -70,6 +72,37 @@ pub struct Channel {
     /// Parent channel ID for nested channels.
     /// Voice/Radio channels can be nested under Categories.
     pub parent_id: Option<ChannelId>,
+}
+
+impl Channel {
+    pub fn validate(&self) -> Result<(), FleetNetError> {
+        if self.name.is_empty() {
+            return Err(FleetNetError::ValidationError(Cow::Borrowed(
+                "Channel name cannot be empty",
+            )));
+        }
+        if self.name.len() > 100 {
+            return Err(FleetNetError::ValidationError(Cow::Borrowed(
+                "Channel name cannot exceed 100 characters",
+            )));
+        }
+        if let Some(desc) = &self.description {
+            if desc.len() > 500 {
+                return Err(FleetNetError::ValidationError(Cow::Borrowed(
+                    "Channel description cannot exceed 500 characters",
+                )));
+            }
+        }
+
+        if let Some(parent_id) = &self.parent_id {
+            if *parent_id == self.id {
+                return Err(FleetNetError::ValidationError(Cow::Borrowed(
+                    "Channel cannot be its own parent",
+                )));
+            }
+        }
+        Ok(())
+    }
 }
 
 /// Types of channels supported by Fleet Net.

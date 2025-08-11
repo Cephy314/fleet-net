@@ -1,4 +1,4 @@
-use crate::types::ChannelId;
+use fleet_net_common::types::ChannelId;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize)]

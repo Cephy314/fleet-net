@@ -6,6 +6,7 @@
 use crate::permission::PermissionSet;
 use crate::types::ChannelId;
 use crate::user::User;
+use serde::{Deserialize, Serialize};
 use std::collections::HashSet;
 use std::net::SocketAddr;
 use std::time::Instant;
@@ -93,7 +94,7 @@ pub struct Session {
 /// Represents the current state of a user session.
 ///
 /// Sessions transition through these states during their lifecycle.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum SessionState {
     /// Initial state when a connection is established but not yet authenticated.
     Authenticating,

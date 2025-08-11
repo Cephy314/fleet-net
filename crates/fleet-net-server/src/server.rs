@@ -1,4 +1,5 @@
 use fleet_net_common::error::FleetNetError;
+use fleet_net_common::types::ServerInfo;
 use fleet_net_protocol::connection::Connection;
 use fleet_net_protocol::message::ControlMessage;
 use fleet_net_protocol::tls::TlsConfig;
@@ -65,12 +66,12 @@ impl Server {
             let mut conn = Connection::new(tls_stream);
 
             // Send server info message
-            let msg = ControlMessage::ServerInfo {
-                name: "Fleet Net Server".to_string(),
-                version: Cow::Borrowed("0.1.0"),
-                user_count: 0,
-                channel_count: 0,
-            };
+            let msg = ControlMessage::ServerInfo(ServerInfo::new(
+                "Fleet Net Server".to_string(),
+                Cow::Borrowed("0.1.0"),
+                0,
+                0,
+            ));
             conn.write_message(&msg).await?;
         }
 
@@ -100,12 +101,12 @@ impl Server {
                             let mut conn = Connection::new(tls_stream);
 
                             // Send server info message
-                            let msg = ControlMessage::ServerInfo {
-                                name: "Fleet Net Server".to_string(),
-                                version: Cow::Borrowed("0.1.0"),
-                                user_count: 0,
-                                channel_count: 0,
-                            };
+                            let msg = ControlMessage::ServerInfo(ServerInfo::new(
+                                "Fleet Net Server".to_string(),
+                                Cow::Borrowed("0.1.0"),
+                                0,
+                                0,
+                            ));
 
                             if let Err(e) = conn.write_message(&msg).await {
                                 tracing::error!("Failed to send server info: {e}");
@@ -174,9 +175,9 @@ mod tests {
         let msg = conn.read_message().await.expect("Failed to read message");
 
         match msg {
-            ControlMessage::ServerInfo { name, version, .. } => {
-                assert_eq!(name, "Fleet Net Server");
-                assert_eq!(version, Cow::Borrowed("0.1.0"));
+            ControlMessage::ServerInfo(info) => {
+                assert_eq!(info.name, "Fleet Net Server");
+                assert_eq!(info.version, Cow::Borrowed("0.1.0"));
             }
             _ => panic!("Expected ServerInfo message, got {msg:?}"),
         }

@@ -27,8 +27,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d48f0b7e-eee4-4788-917f-108f769a3ee9" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/crates/fleet-net-client/src-tauri/src/connection.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TASK_LIST.md" beforeDir="false" afterPath="$PROJECT_DIR$/TASK_LIST.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cargo.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/fleet-net-client/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/crates/fleet-net-client/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/fleet-net-client/src-tauri/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/crates/fleet-net-client/src-tauri/src/main.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/fleet-net-client/src-tauri/src/radio.rs" beforeDir="false" afterPath="$PROJECT_DIR$/crates/fleet-net-client/src-tauri/src/radio.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/fleet-net-common/src/channel.rs" beforeDir="false" afterPath="$PROJECT_DIR$/crates/fleet-net-common/src/channel.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/fleet-net-common/src/error.rs" beforeDir="false" afterPath="$PROJECT_DIR$/crates/fleet-net-common/src/error.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/fleet-net-common/src/session.rs" beforeDir="false" afterPath="$PROJECT_DIR$/crates/fleet-net-common/src/session.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/fleet-net-common/src/types.rs" beforeDir="false" afterPath="$PROJECT_DIR$/crates/fleet-net-common/src/types.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/fleet-net-protocol/src/connection.rs" beforeDir="false" afterPath="$PROJECT_DIR$/crates/fleet-net-protocol/src/connection.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/fleet-net-protocol/src/key_manager.rs" beforeDir="false" afterPath="$PROJECT_DIR$/crates/fleet-net-protocol/src/key_manager.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/fleet-net-protocol/src/message.rs" beforeDir="false" afterPath="$PROJECT_DIR$/crates/fleet-net-protocol/src/message.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crates/fleet-net-protocol/src/test_helpers.rs" beforeDir="false" afterPath="$PROJECT_DIR$/crates/fleet-net-protocol/src/test_helpers.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/crates/fleet-net-server/src/server.rs" beforeDir="false" afterPath="$PROJECT_DIR$/crates/fleet-net-server/src/server.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -82,33 +94,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Jest.SocketServer.Event Handlers.channel:join.should notify other users when someone joins..executor&quot;: &quot;Run&quot;,
-    &quot;Jest.SocketServer.Event Handlers.executor&quot;: &quot;Run&quot;,
-    &quot;Makefile Target.fmt.executor&quot;: &quot;Run&quot;,
-    &quot;Makefile Target.lint.executor&quot;: &quot;Run&quot;,
-    &quot;Makefile Target.test.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.rust.reset.selective.auto.import&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/cephy/repos/fleet-net&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs.jest.jest_package&quot;: &quot;/home/cephy/source/fleet-net/node_modules/jest&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;org.rust.cargo.project.model.PROJECT_DISCOVERY&quot;: &quot;true&quot;,
-    &quot;org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon&quot;: &quot;&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/home/cephy/source/fleet-net/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Jest.SocketServer.Event Handlers.channel:join.should notify other users when someone joins..executor": "Run",
+    "Jest.SocketServer.Event Handlers.executor": "Run",
+    "Makefile Target.fmt.executor": "Run",
+    "Makefile Target.lint.executor": "Run",
+    "Makefile Target.test.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.rust.reset.selective.auto.import": "true",
+    "git-widget-placeholder": "feature/implement-mvp-client",
+    "last_opened_file_path": "/home/cephy/repos/fleet-net",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs.jest.jest_package": "/home/cephy/source/fleet-net/node_modules/jest",
+    "nodejs_package_manager_path": "npm",
+    "org.rust.cargo.project.model.PROJECT_DISCOVERY": "true",
+    "org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon": "",
+    "settings.editor.selected.configurable": "preferences.sourceCode",
+    "ts.external.directory.path": "/home/cephy/source/fleet-net/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/crates/fleet-net-protocol/src" />
@@ -218,7 +230,7 @@
       <workItem from="1754682979306" duration="4080000" />
       <workItem from="1754836964489" duration="10623000" />
       <workItem from="1754855597456" duration="4885000" />
-      <workItem from="1754870336751" duration="3207000" />
+      <workItem from="1754870336751" duration="16755000" />
     </task>
     <servers />
   </component>

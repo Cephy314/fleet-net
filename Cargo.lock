@@ -1377,6 +1377,7 @@ dependencies = [
  "tauri",
  "tauri-build",
  "tokio",
+ "tokio-rustls",
  "tracing",
  "tracing-subscriber",
  "windows 0.61.3",

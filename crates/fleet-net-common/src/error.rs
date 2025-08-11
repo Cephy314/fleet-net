@@ -85,6 +85,12 @@ pub enum FleetNetError {
 
     #[error("Encryption error: {0}")]
     EncryptionError(Cow<'static, str>),
+
+    #[error("Validation error: {0}")]
+    ValidationError(Cow<'static, str>),
+
+    #[error("Unknown error: {0}")]
+    UnknownError(Cow<'static, str>),
 }
 
 impl From<serde_json::Error> for FleetNetError {
